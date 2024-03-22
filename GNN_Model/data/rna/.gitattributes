@@ -1,0 +1,5 @@
+23S_rRNA_aligned_7K00.fa filter=lfs diff=lfs merge=lfs -text
+*.pt filter=lfs diff=lfs merge=lfs -text
+processed_for_ml/train.pt filter=lfs diff=lfs merge=lfs -text
+processed_for_ml/val.pt filter=lfs diff=lfs merge=lfs -text
+processed_for_ml/23S_alignment.txt filter=lfs diff=lfs merge=lfs -text
