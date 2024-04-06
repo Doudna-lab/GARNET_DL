@@ -393,17 +393,20 @@ class GPT(nn.Module):
             # Select logits of the next token position
             logits = logits[:, -1, :]
 
-            # Convert logits to probabilities
-            probs = F.softmax(logits, dim=-1)
+            # Convert logits to log probabilities directly
+            log_probs_next_token = F.log_softmax(logits, dim=-1)
 
             # Get the indices of the next tokens
             next_tokens = idx[:, i].unsqueeze(-1)
 
-            # Gather the probabilities of the actual next tokens for each sequence in the batch
-            token_probs = probs.gather(1, next_tokens).squeeze(1)
+            # Gather the log probabilities of the actual next tokens for each sequence in the batch
+            if len(torch.unique(next_tokens)) == 1:
+                log_token_probs = log_probs_next_token.gather(1, next_tokens).squeeze(1)
+            else:
+                log_token_probs = torch.zeros(b, device=idx.device)
 
-            # Calculate log probabilities and add to total for each sequence
-            log_probs += token_probs.log()
+            # Add to total log probability for each sequence
+            log_probs += log_token_probs
 
         # For individual probabilities, return them directly
         return log_probs  # Return log probabilities for each sequence in the batch

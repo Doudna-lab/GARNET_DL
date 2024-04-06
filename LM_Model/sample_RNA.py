@@ -14,14 +14,17 @@ import torch
 from model_RNA_rot import GPTConfig, GPT
 print(time.ctime())
 # -----------------------------------------------------------------------------
-in_ckpt = '/home/ubuntu/software/jamie_rna_llm/out/231RNAs_triples_0_18_6_300_rot_flash'
+#in_ckpt = '/home/ubuntu/software/jamie_rna_llm/out/231RNAs_triples_0_18_6_300_rot_flash' #23S_triples_0_18_6_300' # Input checkpoint file name, i.e. 23S_97tokens.pt, minus the suffix, with directory.
+#in_ckpt = '/home/ubuntu/software/jamie_rna_llm/out/231RNAs_Thermo_triples_finetune_0_18_6_300_rot_flash'
+in_ckpt = '/home/ubuntu/software/jamie_rna_llm/out/23S_triples_0_18_6_300_rot_flash'
+#in_ckpt = '/home/ubuntu/software/jamie_rna_llm/out/23S_thermo_triples_LM_finetune_0_18_6_300_rot_flash'
 meta_filename = '/home/ubuntu/software/jamie_rna_llm/data/23S_triples_meta.pkl' # Technically, should get from ckpt input, but putting it here for reference.
-out_fasta = 'out/23S_from_231RNAs_triples_0_18_6_300_rot_flash_new.0.5.fasta'
-start = "FILE:data/Ecoli-23S-5p-386nts.txt" # Specify a file, use as: "FILE:prompt.txt" or "FILE:prompt.fasta"
+out_fasta = 'out/23S_from_23S_triples_0_18_6_300_rot_flash_2554Cseed.t0.5.fasta'
+start = 'FILE:data/Ecoli_23S_7K00.fasta'
 start_string = 384
 num_samples = 1000 # number of samples to draw
 batch_size = 50 # Make num_samples % batch_size = 0
-max_new_tokens = 2600 # number of tokens generated in each sample
+max_new_tokens = 370 # number of tokens generated in each sample
 temperature = 0.5 # 1.0 = no change, < 1.0 = less random, > 1.0 = more random, in predictions
 top_k = 97 # retain only the top_k most likely tokens, clamp others to have 0 probability
 seed = 1337
@@ -221,7 +224,8 @@ if start.startswith('FILE:'):
             string += line.strip()
             # Check if the accumulated string exceeds the desired length
             if len(string) >= start_string:
-                string = string[:start_string]
+                string = string[start_string - gptconf.block_size:start_string]
+                print('len(string)=', len(string))
                 break  # Exit the loop since we've reached the desired length
 
 # Need to choose proper tokenization scheme, depending on token library used.

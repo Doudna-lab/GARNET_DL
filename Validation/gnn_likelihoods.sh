@@ -31,15 +31,16 @@ ${infernal_dir}esl-alimask ${file_prefix}_match_only.sto $ecoli_mask > ${file_pr
 ${infernal_dir}esl-reformat afa ${file_prefix}_trimmed_to_GNN.sto > ${file_prefix}_trimmed_to_GNN.afa
 
 python /home/ubuntu/software/gnn_log_liks/structure-based-rna-model/bin/score_likelihoods.py \
-       	-i ${file_prefix}_trimmed_to_GNN.afa \
-	-o ${file_prefix}_log_liks_pt.csv \
-	--device cpu \
-      	--model_path /home/ubuntu/software/gnn_log_liks/inputs/pretrained.pt \
-       	--distance_map /home/ubuntu/software/gnn_log_liks/inputs/distance_map.npy
-
-python /home/ubuntu/software/gnn_log_liks/structure-based-rna-model/bin/score_likelihoods.py \
         -i ${file_prefix}_trimmed_to_GNN.afa \
         -o ${file_prefix}_log_liks_ft.csv \
         --device cpu \
+        --model_path /home/ubuntu/software/gnn_log_liks/inputs/finetuned.pt \
+        --distance_map /home/ubuntu/software/gnn_log_liks/inputs/distance_map.npy
+
+python /home/ubuntu/software/gnn_log_liks/structure-based-rna-model/bin/score_likelihoods_without_mutation.py
+        -i ${file_prefix}_trimmed_to_GNN.afa \
+        -o ${file_prefix}_log_liks_ft_mutation_masked.csv \
+        --mut_idx $mutation_index
+	--device cpu \
         --model_path /home/ubuntu/software/gnn_log_liks/inputs/finetuned.pt \
         --distance_map /home/ubuntu/software/gnn_log_liks/inputs/distance_map.npy
