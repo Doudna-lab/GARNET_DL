@@ -1,0 +1,3 @@
+* Potasium in rcsb: resn -- K; atname -- K
+
+* ions in molmol format: I just copied from rcsb. If it turns out that they are different, I will modify molmol.lib later.
