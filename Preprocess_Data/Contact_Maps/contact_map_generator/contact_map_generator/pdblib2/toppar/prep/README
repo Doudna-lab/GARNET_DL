@@ -1,4 +1,0 @@
-To pre-modify original *.lib file
-
-sed -i '/^GROUP/d' charmm22.lib
-sed -i '/^ /s/ //g' charmm22.lib
