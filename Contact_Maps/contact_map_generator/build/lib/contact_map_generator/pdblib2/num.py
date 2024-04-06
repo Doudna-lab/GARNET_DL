@@ -1,0 +1,284 @@
+from .base import *
+from ..common.matvec import *
+import numpy as np
+from numpy import array,mean,pi,dot,cross,linalg,ones
+from operator import add
+from functools import reduce
+#import pdb  #<== for debug
+
+#===============================================================================
+class Mol(Mol):
+    pass
+
+### Public Functions ###
+#===============================================================================
+def getmat(obj):
+    """
+    Generate an Array from coor of obj
+
+    obj: Pdb, Mol, Segment, Residue, or atoms (i.e., atom list)
+    """
+    atoms = getats(obj)
+    return array([at.r for at in atoms if at.r])
+
+#===============================================================================
+def putmat(obj, M, skipnull=True):
+    """
+    Update coor of obj using an Array
+
+    obj: Pdb, Mol, Segment, Residue, or atoms (i.e., atom list)
+    M  : Array(Nx3)
+    """
+    atoms = getats(obj)
+    if skipnull:
+        atoms = [x for x in atoms if x.r]
+    if M.shape[0] != len(atoms):
+        print('ERROR: the matrix does not match atoms!')
+        exit(1)
+    for i,at in enumerate(atoms):
+        at.r = tuple(M[i,:])
+
+#===============================================================================
+def com(obj):
+    """
+    Return center of mass of an obj, in form of a vect
+
+    obj  : Pdb, Mol, Segment, Residue, or atoms (i.e., atom list)
+    """
+    M = getmat(obj)
+    return mean(M, 0)
+
+#===============================================================================
+def inertia(obj):
+    """
+    Return principal axes of an obj, in form of 3 inertial values and 
+    3 vectors, biggest first (This code is adapted from
+    Pierre Poulain's python script: http://pastebin.com/m8wryusp)
+
+    obj  : Pdb, Mol, Segment, Residue, or atoms (i.e., atom list)
+    Note: Only CA atoms are taken into consideration
+    """
+    ats = [x for x in getats(obj) if x.name=='CA']
+    M = getmat(ats)
+    M = M - mean(M,0)
+
+    # compute inertial tensor
+    inertial = dot(M.T, M)
+    eigval,eigvec = linalg.eig(inertial)
+    idx = eigval.argsort()[::-1]  # get indice for descending sort
+
+    return eigval[idx],eigvec[:,idx]
+
+#===============================================================================
+def dist(a1, a2):
+    """
+    distance between atom a1 and atom a2
+
+    a1,a2: atom or vec
+    """
+    p1 = (a1.r if isinstance(a1, Atom) else a1)
+    p2 = (a2.r if isinstance(a2, Atom) else a2)
+    if len(p1)!=3 or len(p2)!=3:
+        print('ERROR: invalid a1/a2!')
+        exit(1)
+    return matvec.dist(p1, p2)
+
+#===============================================================================
+def groupdist(obj1, obj2):
+    """
+    distance between two atom groups
+
+    a1,a2: atom list
+    """
+    ats1 = getats(obj1)
+    ats2 = getats(obj2)
+    M1 = getmat(ats1)
+    M2 = getmat(ats2)
+    x = np.subtract.outer(M1[:,0], M2[:,0])
+    y = np.subtract.outer(M1[:,1], M2[:,1])
+    z = np.subtract.outer(M1[:,2], M2[:,2])
+    return np.sqrt(x*x+y*y+z*z)
+
+#===============================================================================
+def angle(a1, a2, a3):
+    """
+    angle formed by a1-a2-a3
+
+    a1,a2,a3: atom or vec
+    """
+    p1 = (a1.r if isinstance(a1, Atom) else a1)
+    p2 = (a2.r if isinstance(a2, Atom) else a2)
+    p3 = (a3.r if isinstance(a3, Atom) else a3)
+    if len(p1)!=3 or len(p2)!=3 or len(p3)!=3:
+        print('ERROR: invalid a1/a2/a3!')
+        exit(1)
+    ang = matvec.angle(p1, p2, p3)
+    ang = (ang-2*pi if ang>pi else ang)
+    return ang*180.0/pi
+
+#===============================================================================
+def dihe(a1, a2, a3, a4):
+    """
+    dihedral angle formed by a1-a2-a3-a4
+
+    a1,a2,a3,a4: atom or vec
+    """
+    p1 = (a1.r if isinstance(a1, Atom) else a1)
+    p2 = (a2.r if isinstance(a2, Atom) else a2)
+    p3 = (a3.r if isinstance(a3, Atom) else a3)
+    p4 = (a4.r if isinstance(a4, Atom) else a4)
+    if len(p1)!=3 or len(p2)!=3 or len(p3)!=3 or len(p4)!=3:
+        print('ERROR: invalid a1/a2/a3/a4!')
+        exit(1)
+    ang = matvec.dihe(p1, p2, p3, p4)
+    ang = (ang-2*pi if ang>pi else ang)
+    return ang*180.0/pi
+
+#===============================================================================
+def translate(obj, a0, a1):
+    """
+    Translate atoms according to vector a1-a0
+
+    obj  : Pdb, Mol, Segment, Residue, or atoms (i.e., atom list)
+    a0,a1: atom or vec
+    """
+    atoms = getats(obj)
+    M = getmat(atoms)
+    p0 = (a0.r if isinstance(a0, Atom) else a0)
+    p1 = (a1.r if isinstance(a1, Atom) else a1)
+    if len(p0)!=3 or len(p1)!=3:
+        print('ERROR: invalid a0 or a1!')
+        exit(1)
+    M = matvec.translate(M, p0, p1)
+    putmat(atoms, M)
+
+#===============================================================================
+def rotate(obj, a0, a1, theta):
+    """
+    Rotate atoms around axis a0->a1
+
+    obj  : Pdb, Mol, Segment, Residue, or atoms (i.e., atom list)
+    a0,a1: atom or vec
+    theta: rotate angle (in unit of rad)
+    """
+    atoms = getats(obj)
+    M = getmat(atoms)
+    p0 = (a0.r if isinstance(a0, Atom) else a0)
+    p1 = (a1.r if isinstance(a1, Atom) else a1)
+    if len(p0)!=3 or len(p1)!=3:
+        print('ERROR: invalid a0 or a1!')
+        exit(1)
+    M = matvec.rotate(M, p0, p1, theta)
+    putmat(atoms, M)
+
+#===============================================================================
+def reorient(obj, a0, a1, b0, b1):
+    """
+    Reorient atoms so that its vector a1-a0 will be superimposed on a ref vect
+    b1-b0. Note: atoms will be translated first according to vect b0-a0; i.e.
+    atoms will be translated from a0 to b0 and be rotated so that vect a1-a0
+    and vect b1-b0 point to the same direction.
+
+    obj        : Pdb, Mol, Segment, Residue, or atoms (i.e., atom list)
+    a0,a1,b0,b1: atom or vec
+    """
+    atoms = getats(obj)
+    M = getmat(atoms)
+    pnt0 = (a0.r if isinstance(a0, Atom) else a0)
+    pnt1 = (a1.r if isinstance(a1, Atom) else a1)
+    ref0 = (b0.r if isinstance(b0, Atom) else b0)
+    ref1 = (b1.r if isinstance(b1, Atom) else b1)
+    if len(pnt0)!=3 or len(pnt1)!=3 or len(ref0)!=3 or len(ref1)!=3:
+        print('ERROR: invalid a0/a1/b0/b1!')
+        exit(1)
+    M = matvec.reorient(M, pnt0, pnt1, ref0, ref1)
+    putmat(atoms, M)
+
+#===============================================================================
+def join(seg1, resi1, seg2, resi2):
+    """
+    Concatenate two segments: seg1 and seg2 will be aligned first so that resi1
+    of seg1 and resi2 of seg2 are in the same position. In seg1, residues after
+    resi1 will be deleted; In seg2, residues before resi2 will be deleted. Then
+    the two segments are concatenated together, and the result is stored in
+    seg1.
+
+    seg1,seg2:   Segment
+    resi1,resi2: resi (residue id)
+    """
+    rid1 = seg1.getindex(resi1)
+    if rid1 == None:
+        print('ERROR: cannot find resi1 in seg1!')
+        exit(1)
+    rid2 = seg2.getindex(resi2)
+    if rid2 == None:
+        print('ERROR: cannot find resi2 in seg2!')
+        exit(1)
+
+    # get atoms of the 2nd piece
+    ats2 = reduce(add, [res.atoms for res in seg2.reses[rid2:]], [])
+
+    # b0->b1: ref vector CA->C in seg1/resi1
+    b0 = seg1.reses[rid1].getat('CA')
+    b1 = seg1.reses[rid1].getat('C')
+    # a0->a1: vector CA->C in seg2/resi2
+    a0 = seg2.reses[rid2].getat('CA')
+    a1 = seg2.reses[rid2].getat('C')
+
+    # align CA->C of seg2/resi2 to CA->C of seg1/resi1
+    reorient(ats2, a0, a1, b0, b1)
+
+    # generate the resulted segment and store it in seg1
+    seg1.reses = seg1.reses[:rid1+1] + seg2.reses[rid2+1:]
+
+#===============================================================================
+def align(tgt, ref, sel='', atn='CA'):
+    """
+    align structure tgt to structure ref (tgt: target)
+    NB: if two CA atoms in a residue, the latter is kept
+
+    tgt,ref : Pdb, Mol, Segment, Residue, or atoms (i.e., atom list)
+    sel        : resi range to be selected, e.g. '1-3,7,10-17'
+    """
+    ats_tgt = getats(tgt)
+    ats_ref = getats(ref)
+    # build lookup table for CA atoms of tgt and ref
+    dic_tgt = dict([(at.resi,at) for at in ats_tgt if at.name==atn])
+    dic_ref = dict([(at.resi,at) for at in ats_ref if at.name==atn])
+    # figure out common resi to be considered
+    resis_tgt = list(dic_tgt.keys())
+    resis_ref = list(dic_ref.keys())
+    resis = set(resis_tgt) & set(resis_ref)
+    #   convert string to list if applicable
+    if isinstance(sel, str) and sel!='':
+        fds = [list(map(int, fd.split('-'))) for fd in sel.split(',')]
+        sel = reduce(add, [list(range(fd[0],fd[-1]+1)) for fd in fds])
+    #pdb.set_trace()  #<== for debug
+    if isinstance(sel, (list,tuple,set)):
+        resis = resis & set(sel)
+        if len(resis) != len(sel):
+            print(('WARNING: %d resi in sel are ignored!'%(len(sel)-len(resis))))
+    if len(resis) < 3:
+        raise Exception('less 3 resi are found in common')
+    # the final ordered resis
+    resis = list(resis)
+    resis.sort()
+    # the target matrix to be transformed
+    M = getmat(ats_tgt)
+    # build subset matrix A (for tgt) and B (for ref)
+    A = getmat([dic_tgt[resi] for resi in resis])
+    B = getmat([dic_ref[resi] for resi in resis])
+    # alignment
+    mc_A = mean(A, 0)
+    A -= ones((len(A),1)) * mc_A
+    mc_B = mean(B, 0)
+    B -= ones((len(B),1)) * mc_B
+    rot,rmsd = matvec.lsqfit(A, B)
+    if rot is not None:
+        M -= ones((len(M),1)) * mc_A
+        M = dot(M,rot) + ones((len(M),1))*mc_B
+        putmat(ats_tgt, M)
+    else:
+        raise Exception('The alignment failed!')
+
+    return rmsd
