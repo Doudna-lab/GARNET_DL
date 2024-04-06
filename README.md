@@ -11,7 +11,7 @@ The GARNET database (GTDB-Acquired RNA with Environmental Temperatures) is freel
     - GTDB_RNA_Curation/Figure_2_OGT.ipynb
 - Train/Test Split: Hierarchical Clustering with CD-HIT
     - Train_Test_Split/Train_Test_Splits.ipynb
-- Dataset Preprocessing
+- Dataset Preprocessing: Create Contact Maps for GNN Model
     - Contact_Maps/*
 - Language Model:
     - LM_Model/*
