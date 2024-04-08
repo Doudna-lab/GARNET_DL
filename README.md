@@ -1,5 +1,10 @@
 # DESCRIPTION
-This repository contains all code described in our recent manuscript. It includes the curation of diverse RNA datasets from the Genome Taxonomy Database (GTDB), prediction of optimal growth temperature (OGT) phenotypes, and the application of GPT and GNN models for the development of thermostable ribosomes. These resources include examples for dataset preprocessing, the generation of training and test sets utilizing hierarchical clustering with CD-HIT, model validation, and sequence generation. This project is a community effort coordinated by The Innovative Genomics Institute and Department of Electrical Engineering and Computer Sciences at University of California Berkeley.
+This repository contains all code described in our recent manuscript: 
+- Yekaterina Shulgina\*, Marena I. Trinidad\*, Conner J. Langeberg\*, Hunter Nisonoff\*, Seyone Chithrananda\*, Petr Skopintsev\*, Amos J. Nissley\*, Jaymin Patel, Ron S. Boger, Honglue Shi, Peter H. Yoon, Erin E Doherty, Tara Pande, Aditya M. Iyer, Jennifer A. Doudna, Jamie H. D. Cate\*. *RNA language models predict mutations that improve RNA function*. bioRxiv 2024.04.05.588317; doi: https://doi.org/10.1101/2024.04.05.588317
+
+    \* Contributed equally 
+
+It includes the curation of diverse RNA datasets from the Genome Taxonomy Database (GTDB), prediction of optimal growth temperature (OGT) phenotypes, and the application of GPT and GNN models for the development of thermostable ribosomes. These resources include examples for dataset preprocessing, the generation of training and test sets utilizing hierarchical clustering with CD-HIT, model validation, and sequence generation. This project is a community effort coordinated by The Innovative Genomics Institute and Department of Electrical Engineering and Computer Sciences at University of California Berkeley.
 
 The GARNET database (GTDB-Acquired RNA with Environmental Temperatures) is freely available here: https://tinyurl.com/5abszup9
 
