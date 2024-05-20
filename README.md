@@ -14,10 +14,10 @@ The GARNET database (GTDB-Acquired RNA with Environmental Temperatures) is freel
     - Dependencies for GNN Model: Conda_Environments/gnn_environment.yml
     - Dependencies for LM Model: Conda_Environments/lm_environment.yml
     - *Example Installation*:
-      
-        ''' 
-        conda env create  --file data_processing_env.yml --name  data_processing_env
-        '''
+
+      ```bash
+      conda env create --file data_processing_env.yml --name data_processing_env
+      '''
 - <b>Dataset curation</b>: Extraction of Rfams from GTDB
     - GTDB_RNA_Curation/*sh
     - GTDB_RNA_Curation/*py
