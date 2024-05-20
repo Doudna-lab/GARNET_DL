@@ -17,7 +17,7 @@ The GARNET database (GTDB-Acquired RNA with Environmental Temperatures) is freel
 
       ```bash
       conda env create --file data_processing_env.yml --name data_processing_env
-      '''
+
 - <b>Dataset curation</b>: Extraction of Rfams from GTDB
     - GTDB_RNA_Curation/*sh
     - GTDB_RNA_Curation/*py
