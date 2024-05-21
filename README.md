@@ -10,6 +10,7 @@ The GARNET database (GTDB-Acquired RNA with Environmental Temperatures) is freel
 
 ## CONTENTS
 - <b>Software requirements and installation with Conda environments</b>:
+  All software requirements are specified in the following yml files. Dependencies may be configured with Anaconda as detailed below.
     - Dependencies for Rfam curation, data preprocessing, figures and OGT prediction: Conda_Environments/data_processing_env.yml
     - Dependencies for GNN Model: Conda_Environments/gnn_environment.yml
     - Dependencies for LM Model: Conda_Environments/lm_environment.yml
