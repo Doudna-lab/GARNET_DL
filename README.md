@@ -9,8 +9,8 @@ It includes the curation of diverse RNA datasets from the Genome Taxonomy Databa
 The GARNET database (GTDB-Acquired RNA with Environmental Temperatures) is freely available here: https://tinyurl.com/5abszup9
 
 ## CONTENTS
-- <b>Software requirements and installation with Conda environments</b>:
-  All software requirements are specified in the following yml files. Dependencies may be configured with Anaconda as detailed below.
+- <b>Software Requirements and Installation with Anaconda</b>:
+  All software requirements are specified in the following yml files. Dependencies may be configured with [Anaconda](https://docs.anaconda.com/free/anaconda/install/index.html) as detailed below.
     - Dependencies for Rfam curation, data preprocessing, figures and OGT prediction: Conda_Environments/data_processing_env.yml
     - Dependencies for GNN Model: Conda_Environments/gnn_environment.yml
     - Dependencies for LM Model: Conda_Environments/lm_environment.yml
@@ -19,7 +19,7 @@ The GARNET database (GTDB-Acquired RNA with Environmental Temperatures) is freel
       ```bash
       conda env create --file data_processing_env.yml --name data_processing_env
 
-- <b>Dataset curation</b>: Extraction of Rfams from GTDB
+- <b>Dataset Curation</b>: Extraction of Rfams from GTDB
     - GTDB_RNA_Curation/*sh
     - GTDB_RNA_Curation/*py
 - <b>Phenotype Annotation</b>: OGT Prediction and Figure 2
