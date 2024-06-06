@@ -1,5 +1,5 @@
 #!/bin/bash
-#SBATCH -p cpu-c6i-16xlarge
+#SBATCH -p [partition name]
 #SBATCH --job-name cmalign_miniRfam
 #SBATCH -o %j.out
 #SBATCH -e %j.err

@@ -1,5 +1,5 @@
 #!/bin/bash
-#SBATCH -p cpu-c6i-16xlarge
+#SBATCH -p [partition name]
 #SBATCH --job-name filtering_miniRfam
 #SBATCH -o %j.out
 #SBATCH -e %j.out
@@ -12,8 +12,6 @@ conda deactivate
 conda activate bioinfo_tools_Py_310
 
 infernal_dir="/home/ubuntu/anaconda3/bin/"
-rfam_file="/home/ubuntu/datasets/rfam/Rfam.cm"
-gtdb_file="/home/ubuntu/datasets/gtdb/gtdb_genomes_reps_r214/database/gtdb_genomes_reps_r214.fna"
 
 # iterate through each Rfam ID
 while read rfam_id; do
@@ -28,11 +26,11 @@ while read rfam_id; do
 	#
 	# filter based on total sequence length
 	echo "filtering based on sequence length..."
-	python filter_by_length_4.py ${rfam_id}/${rfam_id}_3.sto ${rfam_id}/${rfam_id}_length_remove_list_4.txt
+	python filter_by_length_4.py ${rfam_id}/${rfam_id}_3.sto 2 ${rfam_id}/${rfam_id}_length_remove_list_4.txt
 	#
 	# filter based on secondary structure preservation
 	echo "filtering based on secondary structure..."
-	python filter_by_secondary_structure.py ${rfam_id}/${rfam_id}_3.sto ${rfam_id}/${rfam_id}_secondary_structure_remove_list_4.txt
+	python filter_by_secondary_structure.py ${rfam_id}/${rfam_id}_3.sto 2 ${rfam_id}/${rfam_id}_secondary_structure_remove_list_4.txt
 	#
 	# combine these lists
 	echo "combining lists..."

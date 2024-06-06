@@ -1,5 +1,5 @@
 #!/bin/bash
-#SBATCH -p cpu-c6i-16xlarge
+#SBATCH -p [partition name]
 #SBATCH --job-name consolidating_miniRfam
 #SBATCH -o %j.out
 #SBATCH -e %j.err
@@ -12,8 +12,6 @@ conda deactivate
 conda activate bioinfo_tools_Py_310
 
 infernal_dir="/home/ubuntu/anaconda3/bin/"
-rfam_file="/home/ubuntu/datasets/rfam/Rfam.cm"
-gtdb_file="/home/ubuntu/datasets/gtdb/gtdb_genomes_reps_r214/database/gtdb_genomes_reps_r214.fna"
 
 touch 'mini_rfam.fa'
 touch 'mini_rfam.counts'
