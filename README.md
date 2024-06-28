@@ -22,13 +22,14 @@ The GARNET database (GTDB-Acquired RNA with Environmental Temperatures) is freel
 ## Dataset Curation: Extraction of Rfams from GTDB
   
   Extended directions are available under GTDB_RNA_Curation/rna_alignment_methodology.md
-    - Code:
-        - GTDB_RNA_Curation/*
+- Code:
+    
+  - GTDB_RNA_Curation/*
 ## Phenotype Annotation: OGT Prediction and Figure 2
 
   The workflow for predicting optimal growth temperatures with TOME and the generation of Figure 2 and S2 are provided in the notebook below. 
 - Code:
-        - GTDB_RNA_Curation/Figure_2_OGT.ipynb
+    - GTDB_RNA_Curation/Figure_2_OGT.ipynb
 
 ## Train/Test Split: Hierarchical Clustering with CD-HIT
 
@@ -36,10 +37,11 @@ The GARNET database (GTDB-Acquired RNA with Environmental Temperatures) is freel
 - Dependency Files (Zenodo): Sequence_Sets, hyperthermophiles_60dC_gtdb_ids.txt
 
 - Code:
-        - Train_Test_Split/Train_Test_Splits.ipynb
+    - Train_Test_Split/Train_Test_Splits.ipynb
         
 ## Dataset Preprocessing: Create Contact Maps for GNN Model
-- Contact_Maps/*
+- Code:
+    - Contact_Maps/*
     
 ## Language Model:
 
@@ -48,25 +50,25 @@ The GARNET database (GTDB-Acquired RNA with Environmental Temperatures) is freel
 - Code:
         - LM_Model/*
 - *Tokenization Example:*
-        - Generate Training Tokens:    
+  - Generate Training Tokens:    
   ```bash
-            python prepare_RNA_train.py -i 23S_train.fa.gz -o 23S_triples --type triples
+  python prepare_RNA_train.py -i 23S_train.fa.gz -o 23S_triples --type triples
   ```
-         - Generate Validation Tokens:
+  - Generate Validation Tokens:
   ```bash
-             python prepare_RNA_val.py -i 23S_test.fa.gz -o 23S_triples --type triples
+  python prepare_RNA_val.py -i 23S_test.fa.gz -o 23S_triples --type triples
   ```
-        - Outputs: 23S_triples_train.bin, 23S_triples_val.bin, 23S_triples_meta.pkl
+  - Outputs: 23S_triples_train.bin, 23S_triples_val.bin, 23S_triples_meta.pkl
 - *Training Example:*
   ```bash
-             python -u train_RNA_rot_flash.py train_23S_triples_0_18_6_300_rot_flash.py &> train_23S_triples_0_18_6_300_rot_flash.log
+  python -u train_RNA_rot_flash.py train_23S_triples_0_18_6_300_rot_flash.py &> train_23S_triples_0_18_6_300_rot_flash.log
   ```
   - Output: out/23S_triples_0_18_6_300_rot_flash.pt
 - *Finetuning Example:*
   ```bash
-             python -u finetune_RNA_rot_flash.py finetune_23S_0_18_6_300_rot_flash.py &> finetune_23S_0_18_6_300_rot_flash.log
+  python -u finetune_RNA_rot_flash.py finetune_23S_0_18_6_300_rot_flash.py &> finetune_23S_0_18_6_300_rot_flash.log
   ```
-      - Output: out/23S_thermo_triples_LM_0_18_6_300_rot_flash.pt
+  - Output: out/23S_thermo_triples_LM_0_18_6_300_rot_flash.pt
 ## GNN Model: Graph-Based RNA Sequence Modeling
 - Code:
     - GNN_Model/*
@@ -79,7 +81,7 @@ The GARNET database (GTDB-Acquired RNA with Environmental Temperatures) is freel
         - LM_Model/*
 - *Example*: For the RNA LM’s, sequences generated using either the pretrained (PT) or hyperthermophile finetuned (FT) models. Models include those trained on 23S sequences only, or on the 231 RFAM RNA set.
   ```bash
-          python -u sample_RNA.py &> sample_23S_1.log
+  python -u sample_RNA.py &> sample_23S_1.log
   ```
 ## Validation: Likelihoods of Generated Sequence
   
@@ -89,7 +91,7 @@ The GARNET database (GTDB-Acquired RNA with Environmental Temperatures) is freel
         - Validation/*
 - *Example:*
   ```bash
-          python -u seqprob_23S_PT_v2_sweep.py &> seqprob_23S_EcoliWT_sweep_231RNAsmodel_PT.log
-          python -u seqprob_23S_FT_v2_sweep.py &> seqprob_23S_EcoliWT_sweep_231RNAsmodel_FT.log
+  python -u seqprob_23S_PT_v2_sweep.py &> seqprob_23S_EcoliWT_sweep_231RNAsmodel_PT.log
+  python -u seqprob_23S_FT_v2_sweep.py &> seqprob_23S_EcoliWT_sweep_231RNAsmodel_FT.log
   ```
 
