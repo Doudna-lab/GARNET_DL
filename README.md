@@ -16,13 +16,14 @@ The GARNET database (GTDB-Acquired RNA with Environmental Temperatures) is freel
     - Dependencies for LM Model: Conda_Environments/lm_environment.yml
     - *Example Installation*:
 
-      ```bash
+```bash
           conda env create --file data_processing_env.yml --name data_processing_env
-      ```
+```
 ## Dataset Curation: Extraction of Rfams from GTDB
   
   Extended directions are available under GTDB_RNA_Curation/rna_alignment_methodology.md
-    - GTDB_RNA_Curation/*
+    - Code:
+        - GTDB_RNA_Curation/*
 ## Phenotype Annotation: OGT Prediction and Figure 2
 
   The workflow for predicting optimal growth temperatures with TOME and the generation of Figure 2 and S2 are provided in the notebook below. 
@@ -48,23 +49,23 @@ The GARNET database (GTDB-Acquired RNA with Environmental Temperatures) is freel
         - LM_Model/*
 - *Tokenization Example:*
         - Generate Training Tokens:    
-         ```bash
+  ```bash
             python prepare_RNA_train.py -i 23S_train.fa.gz -o 23S_triples --type triples
-         ```
+  ```
          - Generate Validation Tokens:
-         ```bash
+  ```bash
              python prepare_RNA_val.py -i 23S_test.fa.gz -o 23S_triples --type triples
-         ```
+  ```
         - Outputs: 23S_triples_train.bin, 23S_triples_val.bin, 23S_triples_meta.pkl
 - *Training Example:*
-      ```bash
+  ```bash
              python -u train_RNA_rot_flash.py train_23S_triples_0_18_6_300_rot_flash.py &> train_23S_triples_0_18_6_300_rot_flash.log
-         ```
+  ```
   - Output: out/23S_triples_0_18_6_300_rot_flash.pt
 - *Finetuning Example:*
-      ```bash
+  ```bash
              python -u finetune_RNA_rot_flash.py finetune_23S_0_18_6_300_rot_flash.py &> finetune_23S_0_18_6_300_rot_flash.log
-         ```
+  ```
       - Output: out/23S_thermo_triples_LM_0_18_6_300_rot_flash.pt
 ## GNN Model: Graph-Based RNA Sequence Modeling
 - Code:
@@ -77,9 +78,9 @@ The GARNET database (GTDB-Acquired RNA with Environmental Temperatures) is freel
         - Generated_Sequences/*
         - LM_Model/*
 - *Example*: For the RNA LM’s, sequences generated using either the pretrained (PT) or hyperthermophile finetuned (FT) models. Models include those trained on 23S sequences only, or on the 231 RFAM RNA set.
-      ```bash
+  ```bash
           python -u sample_RNA.py &> sample_23S_1.log
-      ```
+  ```
 ## Validation: Likelihoods of Generated Sequence
   
   Calculation of the probability of generating a particular sequence from a model. Input sequences should all be of the same length, in multifasta format.
@@ -87,8 +88,8 @@ The GARNET database (GTDB-Acquired RNA with Environmental Temperatures) is freel
 - Code:
         - Validation/*
 - *Example:*
-      ```bash
+  ```bash
           python -u seqprob_23S_PT_v2_sweep.py &> seqprob_23S_EcoliWT_sweep_231RNAsmodel_PT.log
           python -u seqprob_23S_FT_v2_sweep.py &> seqprob_23S_EcoliWT_sweep_231RNAsmodel_FT.log
-      ```
+  ```
 
