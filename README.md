@@ -37,14 +37,12 @@ conda env create --file data_processing_env.yml --name data_processing_env
 
 ## Train/Test Split: Hierarchical Clustering with CD-HIT
 
-  Train-test splits were performed using hierarchical clustering with CD-HIT-EST, as described in the manuscript. Step-by-step commands for splitting the rRNA datasets, 228 Rfam sequences, aggregation of the 231 Rfam superset and generation of the thermophile finetuning sets are described in the notebook below.
+  Train-test splits were performed using hierarchical clustering with CD-HIT-EST, as described in the manuscript. Step-by-step commands for splitting the rRNA datasets, 228 Rfam sequences, aggregation of the 231 Rfam superset and generation of the thermophile finetuning sets are described in the following notebook: Train_Test_Split/Train_Test_Splits.ipynb.
 - <b>Dependency Files (Zenodo):</b>
     - RNA Sequences in fasta format (*fa.gz)
     - hyperthermophiles_60dC_gtdb_ids.txt
 - <b>Directory:</b>
     -  train_Test_Split/
-- <b>Code</b>:
-    - Train_Test_Split/Train_Test_Splits.ipynb
         
 ## Dataset Preprocessing: Create Contact Maps for GNN Model
 - <b>Directory</b>:
