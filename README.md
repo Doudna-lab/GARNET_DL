@@ -25,8 +25,14 @@ The GARNET database (GTDB-Acquired RNA with Environmental Temperatures) is freel
   Extended directions are available under GTDB_RNA_Curation/rna_alignment_methodology.md
     - GTDB_RNA_Curation/*
 - <b>Phenotype Annotation</b>: OGT Prediction and Figure 2
+
+  The workflow for predicting optimal growth temperatures with TOME and the generation of Figure 2 and S2 are provided in the following notebook: 
     - GTDB_RNA_Curation/Figure_2_OGT.ipynb
 - <b>Train/Test Split</b>: Hierarchical Clustering with CD-HIT
+
+  Train-test splits were performed using hierarchical clustering with CD-HIT-EST, as described in the manuscript. Step-by-step commands for splitting the rRNA datasets, 228 Rfam sequences, aggregation of the 231 Rfam superset and generation of the thermophile finetuning sets are described in the following notebook: train_Test_Split/Train_Test_Splits.ipynb
+    - Dependency Files (Zenodo): Sequence_Sets, hyperthermophiles_60dC_gtdb_ids.txt
+
     - Train_Test_Split/Train_Test_Splits.ipynb
 - <b>Dataset Preprocessing</b>: Create Contact Maps for GNN Model
     - Contact_Maps/*
