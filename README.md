@@ -105,7 +105,7 @@ conda env create --file data_processing_env.yml --name data_processing_env
   
   Calculation of the probability of generating a particular sequence from a model. Input sequences should all be of the same length, in multifasta format.
 - <b>Directory:</b>
-        - Validation/*  
+    - Validation/*  
 - <b>Dependency Files:</b>
     - Pretrained (PT) model .pt file or hyperthermophile finetuned (FT) model .pt file
     - configurator.py
