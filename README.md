@@ -6,7 +6,7 @@ This repository contains all code described in our recent manuscript:
 
 It includes the curation of diverse RNA datasets from the Genome Taxonomy Database (GTDB), prediction of optimal growth temperature (OGT) phenotypes, and the application of LM and GNN models for the development of thermostable ribosomes. These resources include examples for dataset preprocessing, the generation of training and test sets utilizing hierarchical clustering with CD-HIT, model validation, and sequence generation. This project is a community effort coordinated by The Innovative Genomics Institute and Department of Electrical Engineering and Computer Sciences at University of California Berkeley.
 
-The GARNET database (GTDB-Acquired RNA with Environmental Temperatures) is freely available here: https://doi.org/10.5281/zenodo.11226103
+The GARNET database (GTDB-Acquired RNA with Environmental Temperatures) is freely available here:  https://doi.org/10.5281/zenodo.12541208
 
 ## Software Requirements and Installation with Anaconda
 
