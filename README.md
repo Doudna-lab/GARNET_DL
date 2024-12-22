@@ -50,9 +50,9 @@ conda env create --file data_processing_env.yml --name data_processing_env
     
 ## Language Model:
 
-  An RNA language model built on a GPT framework, starting from the nanoGPT code at https://github.com/karpathy/nanoGPT. Modifications include rotary positional embedding and rms normalization. The optimal tokenization scheme involves overlapping nucleotide triplets, i.e. triplets with 1-nt steps for each token. Models were pretrained (PT) using all RNA sequences or finetuned (FT) on hyperthermophile sequences. Models include those trained on 23S sequences only, or on the 231 RFAM RNA set.
+  An RNA language model built on a GPT framework, starting from the nanoGPT code at https://github.com/karpathy/nanoGPT. Modifications include rotary positional embedding and rms normalization. The optimal tokenization scheme involves overlapping nucleotide triplets, i.e. triplets with 1-nt steps for each token. Models were pretrained (PT) using all RNA sequences or finetuned (FT) on hyperthermophile sequences. Models include those trained on 23S sequences only, or on the 231 RFAM RNA set. Config files for training and logs provided in respective subdirectories.
 - <b>Directory:</b>
-    - LM_Model/*
+    - LM_Model/
 - <b>Dependency Files</b>:
     - configurator.py
     - model_RNA_rot.py
