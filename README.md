@@ -79,7 +79,7 @@ conda env create --file data_processing_env.yml --name data_processing_env
   python -u finetune_RNA_rot_flash.py ./Config/finetune_23S_Hyperthermophiles_triples_0_18_6_300_rot_flash.py &> ./Logs/finetune_23S_Hyperthermophiles_triples_0_18_6_300_rot_flash.log
   ```
   - Output:
-      - out/23S_thermo_triples_LM_0_18_6_300_rot_flash.pt
+      - out/23S_Hyperthermophiles_triples_finetune_0_18_6_300_rot_flash.pt
 ## GNN Model: Graph-Based RNA Sequence Modeling
 - <b>Directory:</b>
     - GNN_Model/*
