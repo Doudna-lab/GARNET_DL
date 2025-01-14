@@ -70,12 +70,13 @@ conda env create --file data_processing_env.yml --name data_processing_env
       - 23S_triples_val.bin, 23S_triples_meta.pkl
 - <b>*Training Example:*</b>
   ```bash
-  python -u train_RNA_rot_flash.py train_23S_triples_0_18_6_300_rot_flash.py &> train_23S_triples_0_18_6_300_rot_flash.log
+  python -u train_RNA_rot_flash.py ./Config/train_23S_triples_0_18_6_300_rot_flash.py &> ./Logs/train_23S_triples_0_18_6_300_rot_flash.log
+  python -u resume_RNA_rot_flash.py ./Config/resume_23S_triples_0_18_6_300_rot_flash.py &> ./Logs/resume_23S_triples_0_18_6_300_rot_flash.log
   ```
-  - Output: out/23S_triples_0_18_6_300_rot_flash.pt
+  - Output: out/23S_triples_resume_0_18_6_300_rot_flash.pt
 - <b>*Finetuning Example:*</b>
   ```bash
-  python -u finetune_RNA_rot_flash.py finetune_23S_0_18_6_300_rot_flash.py &> finetune_23S_0_18_6_300_rot_flash.log
+  python -u finetune_RNA_rot_flash.py ./Config/finetune_23S_Hyperthermophiles_triples_0_18_6_300_rot_flash.py &> ./Logs/finetune_23S_Hyperthermophiles_triples_0_18_6_300_rot_flash.log
   ```
   - Output:
       - out/23S_thermo_triples_LM_0_18_6_300_rot_flash.pt
