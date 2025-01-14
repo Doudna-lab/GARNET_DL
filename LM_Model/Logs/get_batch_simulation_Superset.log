@@ -1,0 +1,9 @@
+Tue Dec 31 20:53:02 2024
+grad_clip= 1.0
+found vocab_size = 97 (inside /global/home/groups-sw/pc_rnallm/jamie/Superset_triples_meta.pkl)
+Beginning tokens (values): [64, 65, 66, 67, 68, 69, 70, 71, 72, 73, 74, 75, 76, 77, 78, 79]
+End tokens (values): [80, 81, 82, 83, 84, 85, 86, 87, 88, 89, 90, 91, 92, 93, 94, 95]
+Pad index (value): 96
+Out of 10000 batches, there were 0 total incorrectly matching rows x[b,:-1] = y[b,:-1].
+Out of 10000 batches, there were 180000 total correctly matching rows x[b,1:187] = y[b,:186].
+Note, the dimensions for x[b,1:187] = y[b,:186] reflect a padding of 10 between sequences, and choosing the longest seq.

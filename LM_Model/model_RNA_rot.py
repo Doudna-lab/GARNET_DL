@@ -400,10 +400,7 @@ class GPT(nn.Module):
             next_tokens = idx[:, i].unsqueeze(-1)
 
             # Gather the log probabilities of the actual next tokens for each sequence in the batch
-            if len(torch.unique(next_tokens)) == 1:
-                log_token_probs = log_probs_next_token.gather(1, next_tokens).squeeze(1)
-            else:
-                log_token_probs = torch.zeros(b, device=idx.device)
+            log_token_probs = log_probs_next_token.gather(1, next_tokens).squeeze(1)
 
             # Add to total log probability for each sequence
             log_probs += log_token_probs

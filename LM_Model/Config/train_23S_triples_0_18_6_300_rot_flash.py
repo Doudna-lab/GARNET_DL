@@ -5,7 +5,7 @@ device = 'cuda'
 compile = True
 flash = True  # Turn off scaled_dot_product_attention by default. JHDC
 
-out_dir = '/home/ubuntu/software/jamie_rna_llm/out/' # Example for 23S_97tokens_train.bin, etc. as input.
+out_dir = '/global/scratch/users/jcate/' # Example for 23S_97tokens_train.bin, etc. as input.
 eval_interval = 250 # keep frequent because we'll overfit
 eval_iters = 200
 log_interval = 10 # don't print too too often
@@ -19,7 +19,7 @@ wandb_run_name = 'triples'
 
 # Base name for 23S_97tokens_train.bin, 23S_97tokens_val.bin, meta_23S_97tokens.pkl, for example.
 basename = '23S_triples'
-data_dir = '/home/ubuntu/software/jamie_rna_llm/data/'
+data_dir = '/global/home/groups-sw/pc_rnallm/jamie/'
 batch_size = 18
 block_size = 384 # context of up to block_size previous characters
 
@@ -31,7 +31,7 @@ n_embd = 300
 dropout = 0.2
 
 learning_rate = 3e-5 # with baby networks can afford to go a bit higher
-max_iters = 1500000
+max_iters = 1000000
 lr_decay_iters = 50000 # make equal to max_iters usually, but not always.
 min_lr = 3e-6 # learning_rate / 10 usually
 beta2 = 0.998 # make a bit bigger because number of tokens per iter is small

@@ -159,7 +159,7 @@ end_tokens = torch.tensor([value for key, value in stoi.items() if key.endswith(
 pad_index = next((value for key, value in stoi.items() if '-' in key), None)
 assert pad_index is not None, "Pad index is None!"
 
-def trim_sequence(sample, beginning_tokens, end_tokens):
+def trim_sequence(sample_x, sample_y, beginning_tokens, end_tokens):
     '''
     This handles edge cases for >= 2 sequence segments in a sample.
     '''
@@ -167,45 +167,45 @@ def trim_sequence(sample, beginning_tokens, end_tokens):
     begin_indices = torch.empty(0, dtype=torch.long)
     end_indices = torch.empty(0, dtype=torch.long)
 
-    begin_indices = (sample.unsqueeze(1) == beginning_tokens).any(dim=1).nonzero(as_tuple=True)[0]
-    end_indices = (sample.unsqueeze(1) == end_tokens).any(dim=1).nonzero(as_tuple=True)[0]
+    begin_indices = (sample_x.unsqueeze(1) == beginning_tokens).any(dim=1).nonzero(as_tuple=True)[0]
+    end_indices = (sample_x.unsqueeze(1) == end_tokens).any(dim=1).nonzero(as_tuple=True)[0]
 
     #print("begin_indices:", begin_indices)
     #print("end_indices:", end_indices)
 
     # If no beginning or end tokens are found, return the whole sample
     if begin_indices.numel() == 0 and end_indices.numel() == 0:
-        return sample
+        return sample_x, sample_y
     
     # If there's a beginning but no end, trim everything before the beginning and return.
     # This assumes there might be some padding between entries.
     elif begin_indices.numel() > 0 and end_indices.numel() == 0:
-        return sample[begin_indices[0]:]
+        return sample_x[begin_indices[0]:], sample_y[begin_indices[0]:]
 
     # If there's an end but no beginning, trim everything after the end and return.
     # This assumes there might be some padding between entries.
     elif end_indices.numel() > 0 and begin_indices.numel() == 0:
-        return sample[:end_indices[0] + 1]
+        return sample_x[:end_indices[0] + 1], sample_y[:end_indices[0] + 1]
 
     # If there are 2 segment ends, then...
     elif begin_indices.shape[0] == 1 and end_indices.shape[0] == 1:
         # If there's a complete sequence in a sample, but it's smaller than the sample, return the first complete sample.
         if begin_indices[0] < end_indices[0]:
-            return sample[begin_indices[0]:end_indices[0] + 1]
+            return sample_x[begin_indices[0]:end_indices[0] + 1], sample_y[begin_indices[0]:end_indices[0] + 1]
 
         # But if there's an end before a beginning, return the longer segment. 
-        elif sample[begin_indices[0]:].shape[0] > sample[:end_indices[0] + 1].shape[0]:
-            return sample[begin_indices[0]:]
+        elif sample_x[begin_indices[0]:].shape[0] > sample_x[:end_indices[0] + 1].shape[0]:
+            return sample_x[begin_indices[0]:], sample_y[begin_indices[0]:]
         else:
-            return sample[:end_indices[0] + 1]
+            return sample_x[:end_indices[0] + 1], sample_y[:end_indices[0] + 1]
 
     # If there are >= 3 segment ends, there has to be one complete sequence, i.e. a beginning followed by an end.
     # (b, e, b, ...)
     elif begin_indices.shape[0] >= 1 and end_indices.shape[0] >= 1 and begin_indices[0] < end_indices[0]:
-        return sample[begin_indices[0]:end_indices[0] + 1]
+        return sample_x[begin_indices[0]:end_indices[0] + 1], sample_y[begin_indices[0]:end_indices[0] + 1]
     # (e, b, e, ...)
     elif begin_indices.shape[0] >= 1 and end_indices.shape[0] >= 1 and begin_indices[0] > end_indices[0]:
-        return sample[begin_indices[0]:end_indices[1] + 1]
+        return sample_x[begin_indices[0]:end_indices[1] + 1], sample_y[begin_indices[0]:end_indices[1] + 1]
 
 def get_batch(split, beginning_tokens, end_tokens, pad_index):
     '''
@@ -223,8 +223,7 @@ def get_batch(split, beginning_tokens, end_tokens, pad_index):
         sample_y = torch.from_numpy((data[i+1:i+1+block_size]).astype(np.int64))
 
         # Use the trimming function to trim the sequences
-        trimmed_x = trim_sequence(sample_x, beginning_tokens, end_tokens)
-        trimmed_y = trim_sequence(sample_y, beginning_tokens, end_tokens)
+        trimmed_x, trimmed_y = trim_sequence(sample_x, sample_y, beginning_tokens, end_tokens)
 
         # Add padding to the trimmed sequences to make them block_size in length
         if trimmed_x.shape[0] < block_size:
