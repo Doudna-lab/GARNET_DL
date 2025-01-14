@@ -97,7 +97,7 @@ conda env create --file data_processing_env.yml --name data_processing_env
     - Ecoli_16S_rRNA.fasta
 - <b>*Example*:</b>
 
-  For the RNA LM’s, sequences generated using either the pretrained (PT) or hyperthermophile finetuned (FT) models. Models include those trained on 23S sequences only, or on the 231 RFAM RNA set.
+  For the RNA LM’s, sequences generated using either the pretrained (PT) or hyperthermophile finetuned (FT) models. Models include those trained on 23S sequences only, or on the 231 RFAM RNA set (231 or Superset in file names).
   ```bash
   python -u sample_RNA.py &> sample_23S_1.log
   ```
